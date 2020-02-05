@@ -1,0 +1,8 @@
+D:\github\DxDataGridComponent\Afs.DataGridComponent\obj\Debug\netstandard2.0\Afs.DataGridComponent.csprojAssemblyReference.cache
+D:\github\DxDataGridComponent\Afs.DataGridComponent\obj\Debug\netstandard2.0\Afs.DataGridComponent.AssemblyInfoInputs.cache
+D:\github\DxDataGridComponent\Afs.DataGridComponent\obj\Debug\netstandard2.0\Afs.DataGridComponent.AssemblyInfo.cs
+D:\github\DxDataGridComponent\Afs.DataGridComponent\bin\Debug\netstandard2.0\Afs.DataGridComponent.deps.json
+D:\github\DxDataGridComponent\Afs.DataGridComponent\bin\Debug\netstandard2.0\Afs.DataGridComponent.dll
+D:\github\DxDataGridComponent\Afs.DataGridComponent\bin\Debug\netstandard2.0\Afs.DataGridComponent.pdb
+D:\github\DxDataGridComponent\Afs.DataGridComponent\obj\Debug\netstandard2.0\Afs.DataGridComponent.dll
+D:\github\DxDataGridComponent\Afs.DataGridComponent\obj\Debug\netstandard2.0\Afs.DataGridComponent.pdb
