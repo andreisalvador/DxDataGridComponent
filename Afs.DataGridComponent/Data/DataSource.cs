@@ -9,11 +9,11 @@ namespace Afs.DataGridComponent.Data
 {
     public class DataSource
     {
-		public DataSource(IDictionary<string, object> data)
+        public DataSource(IList<IDictionary<string, object>> data)
         {
-            this.Data = new ReadOnlyDictionary<string, object>(data);            
+            this.Data = data;
         }
 
-        public IReadOnlyDictionary<string, object> Data { get; set; }   
+        public IList<IDictionary<string, object>> Data { get; private set; }
     }
 }

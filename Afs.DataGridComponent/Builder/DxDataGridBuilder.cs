@@ -1,6 +1,8 @@
 using Afs.DataGridComponent.Column;
+using Afs.DataGridComponent.Column.Validation;
 using Afs.DataGridComponent.Configuration;
 using Afs.DataGridComponent.Configuration.Column;
+using Afs.DataGridComponent.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +11,16 @@ using System.Threading.Tasks;
 
 namespace Afs.DataGridComponent.Builder
 {
-    public class DxDataGridBuilder
+      public class DxDataGridBuilder
     {
         private DxDataGrid dataGrid;
+        private List<IColumnValidation> columnValidations;
+        private List<IColumnConfiguration> columnConfigurations;
         public DxDataGridBuilder()
         {
             this.dataGrid = new DxDataGrid();
+            this.columnValidations = new List<IColumnValidation>() { new DefaultColumnValidation() };
+            this.columnConfigurations = new List<IColumnConfiguration>() { new ColumnDataTypeConfiguration(), new ColumnFormatConfiguration() };
         }
 
         public DxDataGridBuilder WithDxDataGridConfiguration(DxDataGridConfiguration gridConfiguration)
@@ -44,29 +50,37 @@ namespace Afs.DataGridComponent.Builder
 
         public DxDataGridBuilder WithColumns(IDictionary<string, object> columns, Action<KeyValuePair<string, object>, ColumnDefinition> columnDefinitionMutationAction = null, IColumnConfiguration[] columnsConfiguration = null)
         {
-            Column.Columns internalColmuns = new Column.Columns();
-
             foreach (var column in columns)
             {
                 ColumnDefinition columnDefinition = new ColumnDefinition();
 
-                if (columnsConfiguration != null)
-                    ApplyConfigurations(column, columnDefinition, columnsConfiguration);
+                ConfigureColumn(columnsConfiguration, column, columnDefinition);
 
                 columnDefinitionMutationAction(column, columnDefinition);
 
-                internalColmuns.GridColumns.Add(columnDefinition);
-            }
+                ValidateColumn(columnDefinition);
 
-            this.dataGrid.Columns = internalColmuns;
+                this.dataGrid.Columns.Add(columnDefinition);
+            }
 
             return this;
         }
 
-        private void ApplyConfigurations(KeyValuePair<string, object> column, ColumnDefinition columnDefinition, IColumnConfiguration[] columnsConfiguration)
+        private void ConfigureColumn(IColumnConfiguration[] columnsConfiguration, KeyValuePair<string, object> column, ColumnDefinition columnDefinition)
         {
             foreach (IColumnConfiguration configuration in columnsConfiguration)
                 configuration.ApplyConfigurations(column, columnDefinition);
+        }
+
+        private void ValidateColumn(ColumnDefinition columnDefinition)
+        {
+            foreach (IColumnValidation columnValidation in columnValidations)
+                columnValidation.Validate(columnDefinition);
+        }
+
+        private void ApplyConfigurations(KeyValuePair<string, object> column, ColumnDefinition columnDefinition, IColumnConfiguration[] columnsConfiguration)
+        {
+
         }
 
         public DxDataGridBuilder WithExportation(string fileName = "")
@@ -137,8 +151,27 @@ namespace Afs.DataGridComponent.Builder
             return this;
         }
 
-        public DxDataGridBuilder WithInvisibleColumns()
+        public DxDataGridBuilder WithInvisibleColumns(string[] dataFields)
         {
+            dataFields.ToList().ForEach(field => this.dataGrid.Columns.SingleOrDefault(column => column.DataField.Equals(field)).Visible = false);
+            return this;
+        }
+
+        public DxDataGridBuilder WithDataSource(DataSource dataSource)
+        {
+            this.dataGrid.DataSource = dataSource.Data;
+            return this;
+        }
+
+        public DxDataGridBuilder WithColumnValidations(params IColumnValidation[] columnValidation)
+        {
+            this.columnValidations.AddRange(columnValidation);
+            return this;
+        }
+
+        public DxDataGridBuilder WithColumnConfigurations(params IColumnConfiguration[] columnValidation)
+        {
+            this.columnConfigurations.AddRange(columnValidation);
             return this;
         }
 
@@ -151,7 +184,7 @@ namespace Afs.DataGridComponent.Builder
 
         private void ApplyAjusts()
         {
-            this.dataGrid.Export.AllowExportSelectedData = this.dataGrid.Selection != null && this.dataGrid.Selection.Mode.Equals(Selections.Selection.SelectionTypes.Multiple.Value); ;
+            this.dataGrid.Export.AllowExportSelectedData = this.dataGrid.Selection != null && this.dataGrid.Selection.Mode.Equals(Selections.Selection.SelectionTypes.Multiple.Value);
         }
 
 

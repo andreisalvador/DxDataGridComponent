@@ -10,12 +10,19 @@ using Afs.DataGridComponent.Selections;
 using Afs.DataGridComponent.Sorts;
 using Afs.DataGridComponent.State;
 using Afs.DataGridComponent.Summaries;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Afs.DataGridComponent
 {
     public class DxDataGrid
     {
+        public DxDataGrid()
+        {
+            this.Columns = new List<ColumnDefinition>();
+            this.DataSource = new List<IDictionary<string, object>>();
+        }
+
         [JsonProperty("showBorders")]
         public bool? ShowBorders { get; set; }
 
@@ -62,7 +69,7 @@ namespace Afs.DataGridComponent
         public ColumnFixing ColumnFixing { get; set; }
 
         [JsonProperty("columns")]
-        public Columns Columns { get; set; }
+        public List<ColumnDefinition> Columns { get; set; }
 
         [JsonProperty("groupPanel")]
         public GroupPanel GroupPanel { get; set; }
@@ -95,7 +102,7 @@ namespace Afs.DataGridComponent
         public Summary Summary { get; set; }
 
         [JsonProperty("dataSource")]
-        public DataSource DataSource { get; set; }
+        public IList<IDictionary<string,object>> DataSource { get; set; }
 
         [JsonProperty("sorting")]
         public Sorting Sorting { get; set; }
