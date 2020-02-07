@@ -78,11 +78,6 @@ namespace Afs.DataGridComponent.Builder
                 columnValidation.Validate(columnDefinition);
         }
 
-        private void ApplyConfigurations(KeyValuePair<string, object> column, ColumnDefinition columnDefinition, IColumnConfiguration[] columnsConfiguration)
-        {
-
-        }
-
         public DxDataGridBuilder WithExportation(string fileName = "")
         {
             this.dataGrid.Export = new Exports.Export(fileName);
