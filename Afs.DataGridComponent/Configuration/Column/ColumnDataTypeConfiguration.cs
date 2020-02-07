@@ -58,7 +58,10 @@ namespace Afs.DataGridComponent.Configuration.Column
 
         public void ApplyConfigurations(KeyValuePair<string, object> column, ColumnDefinition columnDefinition)
         {
-            columnDefinition.DataType = GetDataType(column.Value.GetType());
+            if(column.Value != null)
+               columnDefinition.DataType = GetDataType(column.Value.GetType());
+            else
+               columnDefinition.DataType = ColumnDefinition.ColumnDataTypes.Text.Value;
         }
     }
 }
